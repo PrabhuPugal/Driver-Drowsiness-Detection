@@ -51,7 +51,7 @@ To implement the model with the help of webcam we will be using OpenCV module in
  -->
 
 ## Contributing
-Contributions are welcome! If you would like to contribute to the development of the Bank Management System, please follow these steps:
+Contributions are welcome! If you would like to contribute to the development of the Real-Time Driver Drowsiness Detection Project, please follow these steps:
 
 1. Fork the repository.
 2. Create a new branch for your feature or bug fix.
