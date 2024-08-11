@@ -50,3 +50,17 @@ To implement the model with the help of webcam we will be using OpenCV module in
 ![image](https://user-images.githubusercontent.com/97673902/149754681-4eacc35e-462a-43fd-9afb-3caf9a9e7628.png)
  -->
 
+## Contributing
+Contributions are welcome! If you would like to contribute to the development of the Bank Management System, please follow these steps:
+
+1. Fork the repository.
+2. Create a new branch for your feature or bug fix.
+3. Make your changes and test thoroughly.
+4. Submit a pull request with a clear description of the changes.
+5. Please ensure that your code adheres to the project's coding standards and includes appropriate documentation.
+
+## License
+This project is licensed under the MIT License. See the LICENSE file for more details.
+
+## Contact
+For questions or feedback, please reach out to me at prabhupugal01@gmail.com.
