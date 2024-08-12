@@ -1,58 +1,50 @@
-# REAL TIME Driver Drowsiness Detection 
- With the help of OpenCV,tensorflow and keras ,i created a model that can detect if the driver is drowsy on not and alert him with a rooster sound whenever he feels drowsy.
+# Driver Drowsiness Detection
 
-The dataset used is in the folder "IMAGES" containing more than 4000 images
- 
-## Abstract 
-According to the National Highway Traffic Safety Administration, 91,000 crashes involving drowsy drivers occur each year, resulting in 50,000 injuries and roughly 800 deaths. In addition, one out of every 24 adult drivers had fallen asleep behind the wheel in the last 30 days. According to studies, sleeping for more than 20 hours is similar to having a blood alcohol concentration of 0.08 percent. 
-Here, i deceided to construct a neural network that can detect if eyes are closed and, when combined with computer vision, can detect if a real individual has had their eyes closed for more than 2 seconds. Anyone interested in better driving safety, including commercial and everyday drivers, automobile firms, and vehicle-insurance companies, can benefit from this technology.
-For this project, we will collect data, analyse the data, pre-process the data, create a convolutional neural network, construct a model architecture, save the model, and create a webcam to monitor the driver's drowsiness.
+## Description
+**Driver Drowsiness Detection** is a machine learning project designed to detect signs of driver drowsiness using Convolutional Neural Networks (CNNs). The system analyzes video input from a camera to monitor the driver's eye movements and other facial features. If the system detects signs of drowsiness, such as closed eyes for a prolonged period, it triggers an alarm to alert the driver. This project aims to enhance road safety by preventing accidents caused by drowsy driving.
 
-## Face Recognition Library in Python
-I used face recognition library from python to detect faces and manipulate the images for training and testing. Facial recognition is a method of recognizing or verifying a person's identification by looking at their face. People can be identified in pictures, films, or in real-time using facial recognition technology. Biometric security includes facial recognition. Voice recognition, fingerprint recognition, and ocular retina or iris recognition are all examples of biometric software. Although the technology is mostly utilised for security and law enforcement, there is growing interest in other applications.
-Face recognition technology is well-known to many people thanks to FaceID, which is used to unlock iPhones (however, this is only one application of face recognition). Typically, facial recognition does not need a large database of images to identify an individual's identification; instead, it merely identifies and recognises one person as the device's only owner, while restricting access to others.
+## Features
+- **Real-Time Detection**: The system processes video input in real-time to monitor the driver's state of alertness.
+- **CNN Model**: Utilizes a Convolutional Neural Network to accurately detect eye closure and other signs of drowsiness.
+- **Alarm System**: An audible alarm (`rooster.mp3`) is triggered if drowsiness is detected, helping to wake up the driver.
+- **Image Dataset**: The project uses a dataset of images that are preprocessed and categorized into different classes (e.g., eyes open, eyes closed) for training the CNN model.
 
+## Technology Stack
+The project is built using the following technologies:
 
-## Data collection
-I used full facial data from a variety of sources, including UMass Amherst open eye face data and Nanjing University closed eye face data. The eyes were then cropped out of the dataset using a simple python script, leaving us with a total of over 4382 cropped eye images. We added a buffer to each image crop to capture not only the eye but also the area around it. This cropping feature will be used in the webcam section later.
+- **Python**: The primary programming language used for data processing, model training, and detection.
+- **OpenCV**: A computer vision library used for video processing and facial feature extraction.
+- **TensorFlow/Keras**: A deep learning framework used to build and train the Convolutional Neural Network.
+- **Jupyter Notebook**: Used for developing and testing the machine learning model (`Driver Drowsiness Detection using CNN.ipynb`).
 
-## Data pre-processing 
-Pre-processing is a necessary step before the data set is fed into the model. Each image of train and test set are converted into an appropriate matrix size and format that converts the class labels into a one-hot encoding vector. Gray scaling and lighting included.
+## Dataset
+The project uses a custom image dataset consisting of:
 
-![image](https://user-images.githubusercontent.com/97673902/149390646-d54ac650-6fd4-492f-a7a8-24b4028a70d1.png)
+- **F_CLOSED**: Contains images of faces with closed eyes.
+- **F_OPENED**: Contains images of faces with open eyes.
+- **CROPPED**: Contains cropped images focusing on the eyes to improve the model's detection accuracy.
 
+The dataset is used to train the CNN model to distinguish between open and closed eyes, which is crucial for detecting drowsiness.
 
-# Creating A Convolutional Neural Network
+## How It Works
+1. **Video Input**: The system captures video input from a camera focused on the driver's face.
+2. **Feature Extraction**: Using OpenCV, the system detects the driver's face and extracts the region of interest (eyes).
+3. **CNN Model**: The extracted features are passed through the trained CNN model to determine if the driver's eyes are open or closed.
+4. **Drowsiness Detection**: If the eyes are detected as closed for a certain duration, the system concludes that the driver is drowsy.
+5. **Alarm Trigger**: An alarm sound (`rooster.mp3`) is played to alert the driver and prevent potential accidents.
 
-## Convolutional Layers:
-This layer, rather than creating the entire image, produces sections of pixels, allowing for speedier models. This could be more or less dense than the original photos, depending on how many filters we use, but it will allow the model to learn more complex associations with fewer resources. We used 32 filters in total. Use at least one convolutional layer, and two or more is usually recommended. Two 3x3s pooled together followed by three 3x3s pooled together was the best setup for me. The use of a smaller filter size is becoming more common in CNNs. In truth, a double 3x3 layer is nearly identical to a 5x5 layer, but it is faster and often yields superior results. Pooling isn't always necessary or beneficial.
+## Model Training
+1. Architecture: The CNN model is designed with multiple convolutional layers followed by pooling layers, dense layers, and a final softmax output layer.
+2. Training: The model is trained using the preprocessed image dataset, with separate classes for open and closed eyes.
+3. Evaluation: The model is evaluated on a validation set to ensure its accuracy in detecting drowsiness.
 
-## Flatten
-Flatten the image array so it can enter the dense layers.
-
-## Dense Layers
-More dense the layers are, the longer our model will take to train. As the number of neurons in these layers increases, the complexity of the relationships learned by the network will increase. Generally, the idea of convolutional layers is to avoid having to make an overly deep dense layer scheme. For our model we used three layers with relu activation at a decreasing rate of neurons (80, 80, 32). We also used a 30% dropout after each layer.
-
-## Output Layer
-Finally, because this a binary classification problem, make sure to use the sigmoid activation for our outer layer. Because we care more about forecasting the positive class (a sleeping driver) than the negative class (an awake driver), recall will be our most important statistic (sensitivity). The stronger the recall, the fewer sleeping motorists the programme incorrectly guesses are awake (false negatives). 
-The only issue is that our positive class outnumbers our negative class by a large margin. As a result, it's preferable to utilise the F1 score or Precision-Recall AUC score, because they account for the number of times, we think a driver is sleeping but is actually awake (precision). Otherwise, our model will always assume we are sleeping and will be useless.
-
-## Saving the model
-Once the model is built, we will be saving the model using model.save(‘NameOfModel.h5’).
-
-## Creating the webcam 
-To implement the model with the help of webcam we will be using OpenCV module in python to capture our face and recognise whether the driver is sleeping or not.
-
-<!-- ## TESTING
-
-![image](https://user-images.githubusercontent.com/97673902/149754621-ce2de724-a8fb-4c22-b0f6-ef9d7622425a.png)
-![image](https://user-images.githubusercontent.com/97673902/149754650-1cdd1961-0795-4748-a39e-617ff13a5fc3.png)
-![image](https://user-images.githubusercontent.com/97673902/149754681-4eacc35e-462a-43fd-9afb-3caf9a9e7628.png)
- -->
+## Future Enhancements
+1. Integration with Vehicle Systems: Implement the system in real vehicles, integrating it with the car's alert mechanisms.
+2. Improved Accuracy: Enhance the model by using a larger and more diverse dataset, and experimenting with different deep learning architectures.
+3. Additional Features: Incorporate additional drowsiness indicators such as yawning or head nodding to improve detection reliability.
 
 ## Contributing
-Contributions are welcome! If you would like to contribute to the development of the Real-Time Driver Drowsiness Detection Project, please follow these steps:
-
+Contributions are welcome! To contribute to the Driver Drowsiness Detection project, please follow these steps:
 1. Fork the repository.
 2. Create a new branch for your feature or bug fix.
 3. Make your changes and test thoroughly.
